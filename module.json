@@ -1,0 +1,23 @@
+{
+  "id": "readable-beyond20-cards",
+  "title": "Readable Beyond20 Cards",
+  "version": "1.0.0",
+  "description": "Makes Beyond20 roll cards readable when the chat log uses Foundry's dark theme. The light theme is left as it is.",
+  "styles": [
+    "styles/readable-beyond20-cards.css"
+  ],
+  "compatibility": {
+    "minimum": "13",
+    "verified": "14"
+  },
+  "url": "https://github.com/breweries-wa/foundry-readable-beyond20-cards",
+  "manifest": "https://github.com/breweries-wa/foundry-readable-beyond20-cards/releases/latest/download/module.json",
+  "download": "https://github.com/breweries-wa/foundry-readable-beyond20-cards/releases/latest/download/module.zip",
+  "authors": [
+    {
+      "name": "breweries-wa",
+      "url": "https://github.com/breweries-wa",
+      "flags": {}
+    }
+  ]
+}

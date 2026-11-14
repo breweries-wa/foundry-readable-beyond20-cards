@@ -1,0 +1,61 @@
+/*
+ * Readable Beyond20 Cards
+ *
+ * Beyond20 hardcodes dark text colors on its chat cards (title #4b4a44, rolls black,
+ * crit/fail darkgreen/darkred/darkblue). On a dark chat log those are nearly invisible.
+ * See https://github.com/kakaroto/Beyond20/issues/1409
+ *
+ * Which theme applies is decided by the NEAREST themed ancestor, the same way dnd5e
+ * does it: body carries the Applications theme, #interface and sidebar tabs carry the
+ * Interface theme, and dnd5e's "Chat Log Theme" setting puts a theme on the chat log
+ * itself. A plain ".theme-dark .x" selector would match a dark body even when the chat
+ * log sits inside a light #interface; @scope stops at the next .themed element.
+ *
+ * Selectors are one class more specific than Beyond20's own rules, so they win no
+ * matter which order the stylesheets load in (the browser extension injects its CSS
+ * after the page loads).
+ */
+@scope (.theme-dark) to (.themed) {
+    .beyond20-message {
+        --rb20-title: var(--color-text-title, var(--color-text-primary, #efe6d8));
+        --rb20-text: var(--color-text-primary, #efe6d8);
+        --rb20-crit: #6fdc8c;
+        --rb20-fail: #ff8a80;
+        --rb20-crit-fail: #82b1ff;
+        --rb20-discarded: var(--color-text-secondary, #b5b3a4);
+    }
+
+    /* The hover tooltip keeps Beyond20's light parchment background, so it keeps the
+     * original dark colors. Foundry's dice breakdown inside it reads --color-text-*,
+     * which the dark theme has turned light, so put those back as well. */
+    .beyond20-message .beyond20-tooltip-content {
+        --rb20-title: #4b4a44;
+        --rb20-text: black;
+        --rb20-crit: darkgreen;
+        --rb20-fail: darkred;
+        --rb20-crit-fail: darkblue;
+        --rb20-discarded: grey;
+        --color-text-primary: #191813;
+        --color-text-secondary: #4b4a44;
+        color: #191813;
+    }
+
+    .beyond20-message :is(details summary, .beyond20-title) {
+        color: var(--rb20-title);
+    }
+    .beyond20-message .beyond20-roll-detail-normal {
+        color: var(--rb20-text);
+    }
+    .beyond20-message .beyond20-roll-detail-crit {
+        color: var(--rb20-crit);
+    }
+    .beyond20-message .beyond20-roll-detail-fail {
+        color: var(--rb20-fail);
+    }
+    .beyond20-message .beyond20-roll-detail-crit-fail {
+        color: var(--rb20-crit-fail);
+    }
+    .beyond20-message .beyond20-roll-detail-discarded {
+        color: var(--rb20-discarded);
+    }
+}
