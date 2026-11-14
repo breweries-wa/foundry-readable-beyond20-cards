@@ -5,15 +5,20 @@
  * crit/fail darkgreen/darkred/darkblue). On a dark chat log those are nearly invisible.
  * See https://github.com/kakaroto/Beyond20/issues/1409
  *
- * Which theme applies is decided by the NEAREST themed ancestor, the same way dnd5e
- * does it: body carries the Applications theme, #interface and sidebar tabs carry the
- * Interface theme, and dnd5e's "Chat Log Theme" setting puts a theme on the chat log
- * itself. A plain ".theme-dark .x" selector would match a dark body even when the chat
- * log sits inside a light #interface; @scope stops at the next .themed element.
+ * Two parts:
  *
- * Selectors are one class more specific than Beyond20's own rules, so they win no
- * matter which order the stylesheets load in (the browser extension injects its CSS
- * after the page loads).
+ * 1. Which theme applies is decided by the NEAREST themed ancestor, the same way dnd5e
+ *    does it: body carries the Applications theme, #interface and sidebar tabs carry the
+ *    Interface theme, and dnd5e's "Chat Log Theme" setting puts a theme on the chat log
+ *    itself. A plain ".theme-dark .x" selector would match a dark body even when the chat
+ *    log sits inside a light #interface; @scope stops at the next .themed element.
+ *    This part only sets --rb20-* variables.
+ *
+ * 2. The color rules sit outside @scope and read those variables, falling back to
+ *    Beyond20's original colors, so a light chat log looks exactly as before. They are
+ *    !important because on a live v14 game in Chrome the same rules inside @scope lost to
+ *    Beyond20's own (less specific) CSS, which the browser extension injects; outside
+ *    @scope with !important they were confirmed to win.
  */
 @scope (.theme-dark) to (.themed) {
     .beyond20-message {
@@ -39,23 +44,25 @@
         --color-text-secondary: #4b4a44;
         color: #191813;
     }
+}
 
-    .beyond20-message :is(details summary, .beyond20-title) {
-        color: var(--rb20-title);
-    }
-    .beyond20-message .beyond20-roll-detail-normal {
-        color: var(--rb20-text);
-    }
-    .beyond20-message .beyond20-roll-detail-crit {
-        color: var(--rb20-crit);
-    }
-    .beyond20-message .beyond20-roll-detail-fail {
-        color: var(--rb20-fail);
-    }
-    .beyond20-message .beyond20-roll-detail-crit-fail {
-        color: var(--rb20-crit-fail);
-    }
-    .beyond20-message .beyond20-roll-detail-discarded {
-        color: var(--rb20-discarded);
-    }
+.beyond20-message details summary,
+.beyond20-message .beyond20-title {
+    color: var(--rb20-title, #4b4a44) !important;
+}
+.beyond20-message .beyond20-roll-detail-normal {
+    color: var(--rb20-text, black) !important;
+}
+.beyond20-message .beyond20-roll-detail-crit {
+    color: var(--rb20-crit, darkgreen) !important;
+}
+.beyond20-message .beyond20-roll-detail-fail {
+    color: var(--rb20-fail, darkred) !important;
+}
+.beyond20-message .beyond20-roll-detail-crit-fail {
+    color: var(--rb20-crit-fail, darkblue) !important;
+}
+/* Must stay after the crit/fail rules: a discarded die carries both classes. */
+.beyond20-message .beyond20-roll-detail-discarded {
+    color: var(--rb20-discarded, grey) !important;
 }

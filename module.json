@@ -1,7 +1,7 @@
 {
   "id": "readable-beyond20-cards",
   "title": "Readable Beyond20 Cards",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Makes Beyond20 roll cards readable when the chat log uses Foundry's dark theme. The light theme is left as it is.",
   "styles": [
     "styles/readable-beyond20-cards.css"
